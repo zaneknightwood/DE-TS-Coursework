@@ -1,0 +1,14 @@
+[
+    {
+        "name": "Digs",
+        "Player1": {
+            "name": "Sam",
+            "position": "libero",
+            "number": 19
+        }
+    },
+    {
+        "name": "John",
+        "company": "Skillstorm"
+    }
+]
