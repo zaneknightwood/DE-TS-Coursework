@@ -8,10 +8,10 @@ SELECT
 	c.customer_id AS [Customer ID #],
 	c.customer_fname AS [First Name],
 	c.customer_lname AS [Last Name], 
-	count(o.order_id) AS [Order Count]
+	COUNT(o.order_id) AS [Order Count]
 FROM customers c
 JOIN orders o ON c.customer_id = o.order_customer_id
-WHERE format(order_date, 'yyyy-MM') LIKE '2014-01%'
+WHERE FORMAT(order_date, 'yyyy-MM') LIKE '2014-01%'
 GROUP BY c.customer_id, c.customer_fname, c.customer_lname
 ORDER BY [Order Count] DESC, c.customer_id ASC;
 
@@ -28,7 +28,7 @@ SELECT
 	c.customer_zipcode AS [Zipcode]
 FROM customers c
 JOIN orders o ON c.customer_id = o.order_customer_id
-WHERE o.order_customer_id NOT IN (SELECT order_customer_id FROM orders WHERE format(order_date, 'yyyy-MM') LIKE '2014-01%')
+WHERE o.order_customer_id NOT IN (SELECT order_customer_id FROM orders WHERE FORMAT(order_date, 'yyyy-MM') LIKE '2014-01%')
 GROUP BY c.customer_id, c.customer_fname, c.customer_lname, c.customer_email, c.customer_password, c.customer_street, c.customer_city, c.customer_state, c.customer_zipcode
 ORDER BY c.customer_id;
 
