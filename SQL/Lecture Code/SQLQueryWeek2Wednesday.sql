@@ -40,9 +40,6 @@ VALUES
     ('Minnie', 'Mouse', 'minnie@mouse.com', 'fhuih1234', 'U', 1, 2),
     ('Max', 'Goof', 'max@goof.com', 'j4892hyf1', 'U', 1, 2);
 
-
--- WATCH VIDEO TO ADD DELETE STATEMENTS AND ADD WHAT WAS MISSED!!
-
 USE retail_db;
 
 -- Validate data loaded

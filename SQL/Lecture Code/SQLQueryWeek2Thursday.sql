@@ -2,7 +2,11 @@
 
 Built-in Functions
 
--- missed this bit
+Categories:
+- Aggregation Functions
+- Analytics Functions
+- Ranking Functions
+- Scalar Functions
 
 */
 
@@ -224,6 +228,7 @@ SELECT NULLIF('Hello', 'hello');
 SELECT NULLIF('Hello', 'Hello');
 
 /*
+
  Logical Functions
 
 */
@@ -561,4 +566,55 @@ Cons:
 
 */
 
--- see video/uploaded notes for example
+CREATE DATABASE MergeDemo;
+GO
+
+USE MergeDemo;
+GO
+
+CREATE TABLE SourceProducts(
+    ProductID       INT,
+    ProductName     VARCHAR(50),
+    Price           DECIMAL(9,2)
+)
+GO
+
+INSERT INTO SourceProducts(ProductID,ProductName,Price) VALUES (1,'Table',100)
+INSERT INTO SourceProducts(ProductID,ProductName,Price) VALUES (2,'Desk',80)
+INSERT INTO SourceProducts(ProductID,ProductName,Price) VALUES (3,'Chair',50)
+INSERT INTO SourceProducts(ProductID,ProductName,Price) VALUES (4,'Computer',300)
+GO
+
+CREATE TABLE TargetProducts(
+    ProductID       INT,
+    ProductName     VARCHAR(50),
+    Price           DECIMAL(9,2)
+)
+GO
+
+INSERT INTO TargetProducts(ProductID,ProductName,Price) VALUES (1,'Table',100)
+INSERT INTO TargetProducts(ProductID,ProductName,Price) VALUES (2,'Desk',180)
+INSERT INTO TargetProducts(ProductID,ProductName,Price) VALUES (5,'Bed',50)
+INSERT INTO TargetProducts(ProductID,ProductName,Price) VALUES (6,'Cupboard',300)
+GO
+
+-- Merge
+MERGE TargetProducts AS Target
+USING SourceProducts AS Source
+ON Source.ProductID = Target.ProductID
+
+-- For Update
+WHEN MATCHED THEN UPDATE SET
+	Target.ProductName = Source.ProductName,
+	Target.Price = Source.Price
+
+-- For Insert
+WHEN NOT MATCHED BY Target THEN
+	INSERT (ProductID, ProductName, Price)
+	VALUES (Source.ProductID, Source.ProductName, Source.Price);
+
+-- For Delete
+WHEN NOT MATCHED BY Target THEN DELETE;
+
+-- Merging is an Idempotent Action
+-- We can run it as many times as we want with the exact same results

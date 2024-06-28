@@ -132,13 +132,36 @@ FROM users
 ORDER BY user_id;
 
 -- Exercise 6
-
-SELECT
-	country_code = CASE
-		WHEN LEFT(user_phone_no, 4) LIKE '+_ (' THEN CAST(SUBSTRING(user_phone_no, 2,2) AS INT)
-		WHEN LEFT(user_phone_no, 4) LIKE '+__[^(]' THEN CAST(REPLACE(LEFT(user_phone_no, 4), '+', '') AS INT)
-		END,
-	COUNT(1) user_count
-FROM users
-GROUP BY user_phone_no
+SELECT country_code, COUNT(1) FROM (
+	SELECT
+		country_code = CASE
+			WHEN LEFT(user_phone_no, 4) LIKE '+_ (' THEN CAST(SUBSTRING(user_phone_no, 2,2) AS INT)
+			WHEN LEFT(user_phone_no, 4) LIKE '+__[^(]' THEN CAST(REPLACE(LEFT(user_phone_no, 4), '+', '') AS INT)
+			END
+	FROM users
+	WHERE user_phone_no IS NOT NULL
+	GROUP BY user_phone_no
+) sq
+GROUP BY country_code
 ORDER BY country_code;
+
+
+-- Exercise 7
+SELECT
+	COUNT(1) [count]
+FROM order_items
+WHERE ROUND(order_item_quantity * order_item_product_price, 2) != order_item_subtotal;
+
+
+-- Exercise 8
+SELECT day_type, COUNT(1) FROM (
+	SELECT
+		day_type = CASE
+			WHEN DATEPART(weekday, order_date) IN (1,7) THEN 'Weekend days'
+			ELSE 'Week days'
+			END
+	FROM orders
+	WHERE FORMAT(order_date, 'yyyy-MM') = '2014-01'
+	GROUP BY order_date
+) sq
+GROUP BY day_type;

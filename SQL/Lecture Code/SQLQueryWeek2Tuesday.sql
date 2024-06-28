@@ -245,9 +245,23 @@ CREATE TABLE users (
 -- Document our Database objects
 -- Create a Table Comment
 
--- see video
+-- Extended property (SQL Server specific)
+-- Level0: schema, level1: table, level2: column
+EXEC sp_addextendedproperty
+@name = 'Description',
+@value = 'This is my table comment',
+@level0type = N'Schema', @level0name='dbo',
+@level1type = N'Table', @level1name='users'
 
--- right click on table, go to properties, to add table comments
+-- Add a comment to the user_role column
+EXEC sp_addextendedproperty
+@name = 'User Roles',
+@value = 'Valid values are U and A',
+@level0type = N'Schema', @level0name='dbo',
+@level1type = N'Table', @level1name='users',
+@level2type = N'Column', @level2name = 'user_role'
+
+-- OR right click on table, go to properties, to add table comments
 
 /* 
 
