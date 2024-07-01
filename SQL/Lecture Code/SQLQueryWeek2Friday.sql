@@ -228,7 +228,7 @@ SELECT *,
 	SUM(revenue) OVER (PARTITION BY order_date) total_daily_revenue,
 	MIN(revenue) OVER (PARTITION BY order_date) min_daily_revenue,
 	MAX(revenue) OVER (PARTITION BY order_date) max_daily_revenue,
-	AVG(revenue) OVER (PARTITION BY order_item_product_id) max_product_revenue
+	AVG(revenue) OVER (PARTITION BY order_item_product_id) avg_product_revenue
 FROM daily_product_revenue
 ORDER BY order_item_product_id, order_date;
 
